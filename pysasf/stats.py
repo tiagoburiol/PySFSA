@@ -50,31 +50,27 @@ def std(bd):
 
 def randon_props_subsamples(bd, key, n, only_feasebles=False, target=None):
 
-    key_idx = list(bd.df_dict.keys()).index(key) # indice da fonte
+    key_idx = list(bd.df_dict.keys()).index(key) # coluna da fonte em combs
     size = len(bd.df_dict[key]) # tamanho da amostra daquela fonte
-    rand = np.random.choice(np.arange(size), n, replace=False) # sorteia n 
-    feas = bd.feas
-    Ps = bd.props #pega as proporções já calculadas
-    combs = bd.combs
-    
-    # if 'bytarget' pick only the target selected
-    targets_idx = list(bd.df_dict.keys()).index('Y')
-    if target != None:
-        idxs = np.where(np.isin(combs[:,targets_idx],target))[0]#seleciona por target
+    rand = np.random.choice(np.arange(size), n, replace=False) # sorteia n indices
 
-  
-    # if only_feasebles is true pick only feaselbes soluctions
-    if only_feasebles == True:
-        #print('randon_props_subsamples->only_feasebles')
-        idxs = np.where(np.isin(combs[:,key_idx],rand))[0]
-        selected_combs = combs[idxs and feas]
-        selected_Ps = Ps[idxs and feas]
+    Ps = bd.props                    # proporções já calculadas
+    combs = bd.combs                 # combinações de indices de amostras
+    feas = np.asarray(bd.feas, dtype=bool)  # máscara booleana das soluções factíveis
 
-    else:
-        selected_combs = combs[np.where(np.isin(combs[:,key_idx],rand))]
-        selected_Ps = Ps[np.where(np.isin(combs[:,key_idx],rand))]
-        
-    return selected_combs, selected_Ps
+    # linhas cujo indice de amostra da fonte 'key' está no subconjunto sorteado
+    mask = np.isin(combs[:, key_idx], rand)
+
+    # se 'target' for informado, restringe às combinações daquele(s) alvo(s) em Y
+    if target is not None:
+        targets_idx = list(bd.df_dict.keys()).index('Y')
+        mask &= np.isin(combs[:, targets_idx], target)
+
+    # se only_feasebles, mantém apenas as soluções factíveis
+    if only_feasebles:
+        mask &= feas
+
+    return combs[mask], Ps[mask]
 
 
 

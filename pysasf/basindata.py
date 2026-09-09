@@ -240,8 +240,7 @@ class BasinData:
                 print('Calculating proportion:', k, 'of', len(combs),
                       '(', percent ,'%)', end='\r', flush=True)
                 t1=t2
-                
-            #clear_output(wait=False)
+
             X = []
             for i in range(len(comb)-1):
                 key = keys[i]
@@ -286,8 +285,6 @@ class BasinData:
         inicio = time.time()
 
         # Saving
-        #if self.output_folder==None:
-        #    self.output_folder = os.path.join(os.path.expanduser("~"), "pysasf_output")
         if not os.path.exists(self.output_folder):
            os.makedirs(self.output_folder)
            print(f"Folder '{self.output_folder}' criated succesfully.")
@@ -303,7 +300,6 @@ class BasinData:
               self.output_folder+'/'+self.props_filename+'.'+format)
         self._save_array_in_file(combs, self.output_folder, self.combs_filename, format,'int')
         self._save_array_in_file(Ps, self.output_folder, self.props_filename, format,'float32')
-        #self.feas = self.set_feasebles(Ps)
         self._save_feasebles(self.feas,self.output_folder,self.feas_filename, format)
         fim = time.time()
         print ("Time for save files:",fim-inicio)

@@ -8,7 +8,6 @@ Created on jul 2024
 """
 
 import numpy as np
-import statsmodels.api as sm
 
 '''
 To solve the overdetermined linear system of equations 
@@ -41,15 +40,6 @@ def solve_ols_cm(y,X):
     #print(Z)
     P = np.linalg.inv(A)@Z
     return (P[0:-1])
-
-## needs statmodel module
-## same results of solve_ols
-#def solve_ols_sm(y,X):
-#    X = np.divide(X,y.reshape(len(X),1))
-#    X = np.vstack([X, np.ones((1,X.shape[1]))])
-#    y = np.ones(len(X)) 
-#    ols_model = sm.OLS(y, X).fit()
-#    return (ols_model.params)
 
 
 def solve_ols(y,X):
@@ -108,7 +98,3 @@ def solve_minimize2(y,A):
     #P = 1.0/(1.0+np.exp(-S.x))
     P = S.x
     return(P)
-
-
-
-

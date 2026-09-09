@@ -60,11 +60,8 @@ def draw_hull(P, x_col=0, y_col=1, savefig = False,
     plt.figure(figsize=(4, 4))  
 
     points = np.vstack((P[:,x_col],P[:,y_col])).T
-    #print(points.shape)
     hull = ConvexHull(points)
-    
-    #for simplex in hull.simplices:
-        #plt.plot(points[simplex, 0], points[simplex, 1], 'k-',lw=1)
+
     def _plot():
         for simplex in hull.simplices:
             plt.plot(points[simplex, 0], points[simplex, 1], 'k-',lw=1)
@@ -94,61 +91,15 @@ def props_histo(props):
     n = props.shape[0]
     dim = props.shape[1]
     plt.figure(figsize=(5*dim,3))
-    
-    for j in range(dim):
-        plt.subplot(1,dim,j+1)
-        n, bins, patches = plt.hist(props[:,j], bins=50) 
-        plt.title('P'+str(j+1))
-    plt.show()
 
-def props_histo(bd):
-    
-    bd.df_dict
-    n = props.shape[0]
-    dim = props.shape[1]
-    plt.figure(figsize=(5*dim,3))
-    
     for j in range(dim):
         plt.subplot(1,dim,j+1)
-        n, bins, patches = plt.hist(props[:,j], bins=50) 
+        n, bins, patches = plt.hist(props[:,j], bins=50)
         plt.title('P'+str(j+1))
     plt.show()
 
 
 def data_histo(bd):
     for s in bd.sources:
-        #print(s)
         df = bd.df_dict[s]
         df.hist()
-
-'''
-Data is a nSources x nReducts x nProps
-Sources is a string list of sources key for labels
-Reductions e a list of numbers of samples or percentages for reductions
- '''
-def boxplot(data, sources, reductions, in_percents = True):
-    
-# Dados de exemplo
-#dados = [np.random.normal(50, 10, 200), np.random.normal(60, 15, 200)]
-
-# Criando o boxplot com personalização
-    box = plt.boxplot(dados, 
-                  vert=True, 
-                  patch_artist=True, 
-                  notch=True, 
-                  showmeans=True, 
-                  labels=['Conjunto 1', 'Conjunto 2'])
-
-# Personalizando as cores
-#cores = ['lightblue', 'lightgreen']
-#for patch, cor in zip(box['boxes'], cores):
-#    patch.set_facecolor(cor)
-
-# Adicionando rótulos
-#plt.title('Boxplot Personalizado')
-#plt.ylabel('Valores')
-
-# Exibindo o gráfico
-#plt.show()
-
-
